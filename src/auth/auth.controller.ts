@@ -1,10 +1,9 @@
 import { Body, Controller, Post, Req, UseGuards, ValidationPipe } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
-import { GetUser } from './get-user.decoded';
-import { User } from './user.entity';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) { }
@@ -17,12 +16,5 @@ export class AuthController {
     @Post('/signin')
     signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<object> {
         return this.authService.signIn(authCredentialsDto)
-    }
-
-    @Post('/test')
-    @UseGuards(AuthGuard())
-    test(@GetUser() user) {
-        console.log(user);
-        return { message: " ok" }
     }
 }
